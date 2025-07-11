@@ -41,3 +41,4 @@ public class FitnessClass {
     Set<Member> members = new HashSet<>();
 }
 
+
