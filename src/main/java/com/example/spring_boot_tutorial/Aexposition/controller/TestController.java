@@ -1,4 +1,4 @@
-package com.example.spring_boot_tutorial.Aexposition;
+package com.example.spring_boot_tutorial.Aexposition.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

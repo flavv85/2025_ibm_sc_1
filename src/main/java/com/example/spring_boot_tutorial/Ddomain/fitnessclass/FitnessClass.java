@@ -24,6 +24,9 @@ public class FitnessClass {
     @Column(name = "ID")
     String id;
 
+    @Column(name = "NAME", nullable = false)
+    String name;
+
     @Column(name = "START_TIME")
     LocalDateTime startTime;
 

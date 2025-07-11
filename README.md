@@ -29,7 +29,6 @@ Entities:
 -	String name
 -	String nickname
 
-
 3.	FITNESSCLASS
 -	String id
 -	LocalDateTime startTime
