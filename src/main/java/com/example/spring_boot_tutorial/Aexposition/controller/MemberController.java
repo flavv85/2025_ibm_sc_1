@@ -3,11 +3,13 @@ package com.example.spring_boot_tutorial.Aexposition.controller;
 import com.example.spring_boot_tutorial.Aexposition.dto.MemberDto;
 import com.example.spring_boot_tutorial.Aexposition.mapper.MemberMapperService;
 import com.example.spring_boot_tutorial.Bapplication.members.ConsultAllMembers;
+import com.example.spring_boot_tutorial.Bapplication.members.ConsultAllMembersFromFitnessClass;
 import com.example.spring_boot_tutorial.Ddomain.member.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,11 +28,24 @@ public class MemberController {
     ConsultAllMembers consultAllMembers;
 
     @Autowired
+    ConsultAllMembersFromFitnessClass consultAllMembersFromFitnessClass;
+
+    @Autowired
     MemberMapperService memberMapperService;
 
     @GetMapping
     public ResponseEntity<List<MemberDto>> consultAllMembers() {
         List<Member> membersList = consultAllMembers.consultAll();
+        List<MemberDto> response = membersList
+                .stream()
+                .map(member -> memberMapperService.mapMemberFromEntityToDto(member))
+                .toList();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<MemberDto>> consultAllMembersFromFitnessclass(@PathVariable String id) {
+        List<Member> membersList = consultAllMembersFromFitnessClass.getAllMembersFromFitnessClass(id);
         List<MemberDto> response = membersList
                 .stream()
                 .map(member -> memberMapperService.mapMemberFromEntityToDto(member))

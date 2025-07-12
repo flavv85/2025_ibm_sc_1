@@ -1,8 +1,8 @@
 package com.example.spring_boot_tutorial.Cinfrastructure.repository.implementation;
 
-import com.example.spring_boot_tutorial.Cinfrastructure.repository.MemberRepository;
-import com.example.spring_boot_tutorial.Ddomain.member.Member;
-import com.example.spring_boot_tutorial.Ddomain.member.Members;
+import com.example.spring_boot_tutorial.Cinfrastructure.repository.CoachRepository;
+import com.example.spring_boot_tutorial.Ddomain.coach.Coach;
+import com.example.spring_boot_tutorial.Ddomain.coach.Coaches;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,14 +14,11 @@ import java.util.List;
 @Repository
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class MembersSdj implements Members {
-
+public class CoachSdj implements Coaches {
     @Autowired
-    MemberRepository repository;
+    CoachRepository repository;
 
     @Override
-    public List<Member> getAllMembers() {
-      return repository.findAll();
-    }
+    public List<Coach> getAllCoaches(){return repository.findAll();}
 
 }
