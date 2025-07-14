@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CoachSdj implements Coaches {
+public class CoachSdj implements Coaches             {
     @Autowired
     CoachRepository repository;
 

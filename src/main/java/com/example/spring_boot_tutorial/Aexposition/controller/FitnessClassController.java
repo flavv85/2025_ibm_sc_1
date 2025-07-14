@@ -32,7 +32,7 @@ public class FitnessClassController {
                 .toList();
 
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

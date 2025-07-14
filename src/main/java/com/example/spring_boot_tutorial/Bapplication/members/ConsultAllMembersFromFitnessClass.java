@@ -19,7 +19,7 @@ public class ConsultAllMembersFromFitnessClass {
     @Autowired
     FitnessClasses fitnessClasses;
 
-    public List<Member> getAllMembersFromFitnessClass(String fitnessClassId) {
+    public List<Member> consultAllMembersFromFitnessClass(String fitnessClassId) {
         return fitnessClasses.getAllMembersFromFitnessClass(fitnessClassId);
     }
 

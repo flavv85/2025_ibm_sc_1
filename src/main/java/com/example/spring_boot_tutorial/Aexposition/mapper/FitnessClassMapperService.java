@@ -3,6 +3,7 @@ package com.example.spring_boot_tutorial.Aexposition.mapper;
 import com.example.spring_boot_tutorial.Aexposition.dto.FitnessClassDTO;
 import com.example.spring_boot_tutorial.Aexposition.dto.MemberDto;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
+import com.example.spring_boot_tutorial.Ddomain.member.Member;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +26,10 @@ public class FitnessClassMapperService {
 //    }
 //
     public FitnessClassDTO mapFitnessClassFromEntityToDTO(FitnessClass fitnessClass) {
-        return new FitnessClassDTO(fitnessClass.getId(), fitnessClass.getName());
+        return new FitnessClassDTO(fitnessClass.getId(), fitnessClass.getName(),fitnessClass.getMembers()
+                .stream()
+                .map(Member::getNickname)
+                .toList());
     }
 
 }

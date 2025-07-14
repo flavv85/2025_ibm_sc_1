@@ -45,7 +45,7 @@ public class MemberController {
 
     @GetMapping("/{id}")
     public ResponseEntity<List<MemberDto>> consultAllMembersFromFitnessclass(@PathVariable String id) {
-        List<Member> membersList = consultAllMembersFromFitnessClass.getAllMembersFromFitnessClass(id);
+        List<Member> membersList = consultAllMembersFromFitnessClass.consultAllMembersFromFitnessClass(id);
         List<MemberDto> response = membersList
                 .stream()
                 .map(member -> memberMapperService.mapMemberFromEntityToDto(member))

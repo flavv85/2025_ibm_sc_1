@@ -18,6 +18,6 @@ public class ConsultAllCoaches {
     @Autowired
     Coaches coaches;
 
-    public List<Coach> consultAll() {return coaches.getAllCoaches();}
+    public List<Coach> consultAll() {return coaches.getAllCoaches();    }
 
 }

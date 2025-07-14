@@ -2,6 +2,8 @@ package com.example.spring_boot_tutorial.Aexposition.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -10,5 +12,7 @@ import lombok.*;
 public class FitnessClassDTO {
      String id;
      String name;
+
+     List<String> memberNickNames;
 
 }
