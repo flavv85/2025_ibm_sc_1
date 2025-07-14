@@ -6,4 +6,7 @@ import java.util.Optional;
 public interface Coaches {
     List<Coach> getAllCoaches();
     Optional<Coach> getCoachById (String coachId);
+    void saveCoach(Coach coach);
+    void deleteCoach(Coach coach);
+
 }

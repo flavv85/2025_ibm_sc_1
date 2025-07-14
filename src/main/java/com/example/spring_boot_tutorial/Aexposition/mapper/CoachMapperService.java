@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Service
@@ -31,5 +33,16 @@ public class CoachMapperService {
         fitnessClassCoachDetailsDto.setDuration(fitnessClassCoachDetailsDto.appendHourToDuration(String.valueOf(fitnessClass.duration())));
         return fitnessClassCoachDetailsDto;
     }
+    public Coach mapToEntity(ConsultCoachDto dto) {
+        return Coach.builder()
+                .id(String.valueOf(UUID.randomUUID()))
+                .name(dto.getName())
+                .build();
+    }
+    public void updateEntity(Coach coach, ConsultCoachDto dto) {
+        coach.setName(dto.getName());
+    }
+
+
 
 }
