@@ -1,0 +1,25 @@
+package com.example.spring_boot_tutorial.Cinfrastructure.repository.implementation;
+
+
+import com.example.spring_boot_tutorial.Cinfrastructure.repository.FitnessClassesRepository;
+import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
+import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClasses;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class FitnessClassesSdj implements FitnessClasses {
+
+    FitnessClassesRepository fitnessClassesRepository;
+
+    @Override
+    public List<FitnessClass> getFitnessClasses() {
+        return fitnessClassesRepository.findAll();
+    }
+}
