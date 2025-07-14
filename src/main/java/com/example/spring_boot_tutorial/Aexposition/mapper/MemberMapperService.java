@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class MemberMapperService {
 
-    public MemberDto mapMemberFromEntityToDto(Member member) {
-        return new MemberDto(member.getId(), member.getNickname());
+    public MemberDto mapMemberFromEntityToDto(Member member, boolean onlyNickname) {
+        return onlyNickname
+                ? MemberDto.builder().nickname(member.getNickname()).build()
+                : MemberDto.builder().id(member.getId()).nickname(member.getNickname()).build();
     }
 }

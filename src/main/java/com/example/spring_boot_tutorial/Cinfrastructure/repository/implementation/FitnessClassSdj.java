@@ -3,15 +3,15 @@ package com.example.spring_boot_tutorial.Cinfrastructure.repository.implementati
 import com.example.spring_boot_tutorial.Cinfrastructure.repository.FitnessClassRepository;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClasses;
-import com.example.spring_boot_tutorial.Ddomain.member.Member;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -25,9 +25,17 @@ public class FitnessClassSdj implements FitnessClasses {
     public List<FitnessClass> getAllFitnessClasses(){return repository.findAll();}
 
     @Override
-    public List<Member> getAllMembersFromFitnessClass(String fitnessClassId){
-        return repository.findById(fitnessClassId)
-                .map(fitnessClass -> new ArrayList<>(fitnessClass.getMembers()))
-                .orElseThrow(()-> new RuntimeException("Fitness Class not found"));
+    public Optional<FitnessClass> getFitnessClassById(String fitnessClassId) {
+        if (!StringUtils.hasText(fitnessClassId)){
+            return Optional.empty();
+        }
+        return repository.findById(fitnessClassId);
     }
+
+//    @Override
+//    public List<Member> getAllMembersFromFitnessClass(String fitnessClassId){
+//        return repository.findById(fitnessClassId)
+//                .map(fitnessClass -> new ArrayList<>(fitnessClass.getMembers()))
+//                .orElseThrow(()-> new RuntimeException("Fitness Class not found"));
+//    }
 }
