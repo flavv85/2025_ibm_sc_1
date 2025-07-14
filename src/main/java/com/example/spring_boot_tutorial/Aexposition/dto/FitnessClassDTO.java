@@ -12,7 +12,8 @@ import java.util.List;
 public class FitnessClassDTO {
      String id;
      String name;
-
+     String startTime;
+     String endTime;
      List<String> memberNickNames;
 
 }
