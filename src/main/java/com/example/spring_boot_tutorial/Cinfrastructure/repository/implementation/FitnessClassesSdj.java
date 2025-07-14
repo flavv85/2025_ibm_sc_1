@@ -22,4 +22,9 @@ public class FitnessClassesSdj implements FitnessClasses {
     public List<FitnessClass> getFitnessClasses() {
         return fitnessClassesRepository.findAll();
     }
+
+    @Override
+    public void saveFitnessClass(FitnessClass fitnessClass) {
+        fitnessClassesRepository.save(fitnessClass);
+    }
 }

@@ -5,4 +5,7 @@ import java.util.Optional;
 
 public interface FitnessClasses {
     List<FitnessClass> getFitnessClasses();
+
+    void saveFitnessClass (FitnessClass fitnessClass);
+
 }

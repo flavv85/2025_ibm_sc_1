@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -22,5 +23,10 @@ public class MembersSdj implements Members {
     @Override
     public List<Member> getAllMembers() {
       return repository.findAll();
+    }
+
+    @Override
+    public Optional<Member> getMemberById(String memberId) {
+        return repository.findById(memberId);
     }
 }
