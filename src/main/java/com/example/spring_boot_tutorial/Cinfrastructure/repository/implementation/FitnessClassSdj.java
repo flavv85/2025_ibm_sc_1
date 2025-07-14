@@ -21,6 +21,27 @@ public class FitnessClassSdj implements FitnessClasses {
     @Autowired
     FitnessClassRepository repository;
 
+
+    @Override
+    public void saveFitnessClass(FitnessClass fitnessClass) {
+        repository.save(fitnessClass);
+    }
+
+    @Override
+    public void updateFitnessClass(FitnessClass fitnessClass) {
+        repository.save(fitnessClass);
+    }
+
+    @Override
+    public Optional<FitnessClass> getById(String id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public void delete(FitnessClass fitnessClass) {
+        repository.delete(fitnessClass);
+    }
+
     @Override
     public List<FitnessClass> getAllFitnessClasses(){return repository.findAll();}
 

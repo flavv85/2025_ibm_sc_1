@@ -1,40 +1,72 @@
 package com.example.spring_boot_tutorial.Aexposition.controller;
 
+
+import com.example.spring_boot_tutorial.Aexposition.dto.AddMembersToFitnessClassDto;
+import com.example.spring_boot_tutorial.Aexposition.dto.CreateUpdateFitnessClassDto;
 import com.example.spring_boot_tutorial.Aexposition.dto.FitnessClassDTO;
 import com.example.spring_boot_tutorial.Aexposition.mapper.FitnessClassMapperService;
 import com.example.spring_boot_tutorial.Bapplication.fitnessclass.ConsultAllFitnessClasses;
+import com.example.spring_boot_tutorial.Bapplication.fitnessclass.CreateFitnessClass;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
+import com.example.spring_boot_tutorial.Bapplication.fitnessclass.DeleteFitnessClass;
+import com.example.spring_boot_tutorial.Bapplication.fitnessclass.UpdateFitnessClass;
+import com.example.spring_boot_tutorial.Bapplication.fitnessclass.AddMembersToFitnessClass;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/fitness")
+@AllArgsConstructor
+@RequestMapping("/api/fitness-class")
 public class FitnessClassController {
 
-    @Autowired
     ConsultAllFitnessClasses consultAllFitnessClasses;
-
-    @Autowired
-    FitnessClassMapperService fitnessclassMapperService;
+    FitnessClassMapperService fitnessClassMapperService;
+    CreateFitnessClass createFitnessClass;
+    UpdateFitnessClass updateFitnessClass;
+    DeleteFitnessClass deleteFitnessClass;
+    AddMembersToFitnessClass addMembersToFitnessClass;
 
     @GetMapping
     public ResponseEntity<List<FitnessClassDTO>> getFitnessClass(
             @RequestParam(defaultValue = "FULL") String format) {
         List<FitnessClass> fitnessClasses = consultAllFitnessClasses.consultAll();
         List<FitnessClassDTO> response = fitnessClasses.stream()
-                .map(fitnessClass -> fitnessclassMapperService.mapFitnessClassFromEntityToDTO(fitnessClass, format))
+                .map(fitnessClass -> fitnessClassMapperService.mapFitnessClassFromEntityToDTO(fitnessClass, format))
                 .toList();
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping
+    public ResponseEntity<Void> create(@RequestBody CreateUpdateFitnessClassDto dto) {
+        FitnessClass fitnessClassToBeSaved = fitnessClassMapperService.mapFromDtoToEntity(dto);
+        createFitnessClass.createFitnessClass(fitnessClassToBeSaved);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
+    //TODO make a new endpoint or adapt the existing one to return the dto of the updated entity(containing only
+    // the name of the fitness class, duration and coach; only add members into dto if the members were updated (hint: should be in mapper)
+    @PutMapping
+    public ResponseEntity<Void> update(@RequestParam String fitnessClassId,
+                                       @RequestBody CreateUpdateFitnessClassDto dto) {
+        FitnessClass fitnessClassUpdated = fitnessClassMapperService.mapFromDtoToEntity(dto);
+        updateFitnessClass.update(fitnessClassUpdated, fitnessClassId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> delete(@RequestParam String id) {
+        deleteFitnessClass.delete(id);
+        return ResponseEntity.ok("Fitness class deleted successfully");
+    }
+
+    @PostMapping(value = "/add-members")
+    public ResponseEntity<Void> addMembers(@RequestBody AddMembersToFitnessClassDto dto) {
+        addMembersToFitnessClass.addMembers(dto.getFitnessClassId(), dto.getMemberIds());
+        return ResponseEntity.ok().build();
+    }
 
 
 }
