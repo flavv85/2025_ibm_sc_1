@@ -17,16 +17,16 @@ import java.time.format.DateTimeFormatter;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FitnessClassMapperService {
 
-        //BUILDER NOT WORKING??? returns null
-//    public FitnessClassDTO mapFitnessClassFromEntityToDto(FitnessClass fitnessClass) {
-//        FitnessClassDTO fitnessClassDTO = new FitnessClassDTO();
-//        fitnessClassDTO.builder()
-//                .id(fitnessClass.getId())
-//                .name(fitnessClass.getName())
-//                .build();
-//        return fitnessClassDTO;
-//    }
-//
+//        BUILDER NOT WORKING??? returns null
+    public FitnessClassDTO mapFitnessClassFromEntityToDto(FitnessClass fitnessClass) {
+        FitnessClassDTO fitnessClassDTO = new FitnessClassDTO();
+        fitnessClassDTO.builder()
+                .id(fitnessClass.getId())
+                .name(fitnessClass.getName())
+                .build();
+        return fitnessClassDTO;
+    }
+
     public FitnessClassDTO mapFitnessClassFromEntityToDTO(FitnessClass fitnessClass,String format) {
         DateTimeFormatter formatter = switch (format.toUpperCase()) {
             case "FULL" -> DateTimeFormatter.ofPattern("yyyy-MM-dd:HH:mm:ss");
