@@ -2,7 +2,6 @@ package com.example.spring_boot_tutorial.Aexposition.mapper;
 
 import com.example.spring_boot_tutorial.Aexposition.dto.ConsultFitnessClassDTO;
 import com.example.spring_boot_tutorial.Aexposition.dto.CreateUpdateFitnessClassDto;
-import com.example.spring_boot_tutorial.Aexposition.dto.MemberDto;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coaches;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
 import com.example.spring_boot_tutorial.Ddomain.member.Member;
@@ -17,7 +16,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -50,8 +48,8 @@ public class FitnessClassMapperService {
     // todo adapt method to also be used for updating (hint need and id, if null -> new, else will update)
     public FitnessClass mapFromDtoToEntity(CreateUpdateFitnessClassDto dto) {
         Set<Member> memberSet = new HashSet<>();
-        if (dto.getMembers() != null) {
-            Set<String> memberIds = dto.getMembers().stream().map(MemberDto::getId).collect(Collectors.toSet());
+        if (dto.getMemberIds() != null) {
+            Set<String> memberIds = new HashSet<>(dto.getMemberIds());
             memberSet = getMembers(memberIds);
         }
 

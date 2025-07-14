@@ -17,5 +17,5 @@ public class CreateUpdateFitnessClassDto {
     String startTime;
     String endTime;
     String coachId;
-    Set<MemberDto> members;
+    Set<String> memberIds;
 }
