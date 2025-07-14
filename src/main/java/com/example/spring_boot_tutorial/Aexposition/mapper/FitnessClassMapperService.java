@@ -25,7 +25,7 @@ public class FitnessClassMapperService {
     Members members;
     Coaches coaches;
 
-    public ConsultFitnessClassDTO mapFromDomain(FitnessClass fitnessClass) {
+    public ConsultFitnessClassDTO mapToDto(FitnessClass fitnessClass) {
         Set<String> members = new HashSet<>();
         LocalDateTime startTime = fitnessClass.getStartTime();
         LocalDateTime endTime = fitnessClass.getEndTime();
@@ -46,7 +46,7 @@ public class FitnessClassMapperService {
     }
 
     // todo adapt method to also be used for updating (hint need and id, if null -> new, else will update)
-    public FitnessClass mapFromDtoToEntity(CreateUpdateFitnessClassDto dto) {
+    public FitnessClass mapToEntity(CreateUpdateFitnessClassDto dto) {
         Set<Member> memberSet = new HashSet<>();
         if (dto.getMemberIds() != null) {
             Set<String> memberIds = new HashSet<>(dto.getMemberIds());
