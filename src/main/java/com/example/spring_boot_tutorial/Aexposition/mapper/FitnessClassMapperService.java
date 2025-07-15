@@ -3,6 +3,7 @@ package com.example.spring_boot_tutorial.Aexposition.mapper;
 import com.example.spring_boot_tutorial.Aexposition.dto.CreateUpdateFitnessClassDto;
 import com.example.spring_boot_tutorial.Aexposition.dto.FitnessClassDTO;
 import com.example.spring_boot_tutorial.Aexposition.dto.MemberDto;
+import com.example.spring_boot_tutorial.Ddomain.coach.Coach;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coaches;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
 import com.example.spring_boot_tutorial.Ddomain.member.Member;
@@ -11,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -55,8 +57,6 @@ public class FitnessClassMapperService {
         );
     }
 
-
-    // todo adapt method to also be used for updating (hint need and id, if null -> new, else will update)
     public FitnessClass mapFromDtoToEntity(CreateUpdateFitnessClassDto dto) {
         Set<Member> memberSet = new HashSet<>();
         if (dto.getMembers() != null) {
@@ -64,15 +64,25 @@ public class FitnessClassMapperService {
             memberSet = getMembers(memberIds);
         }
 
+
+        if (memberSet.size() <= 2 || memberSet.size() >= 9) {
+            throw new IllegalArgumentException("Class has " + memberSet.size() + " members. It must be between 3 and 8.");
+        }
+
+        //Id+Coach Outside of builder for better readability
+        String id = StringUtils.hasText(dto.getId()) ? dto.getId() : UUID.randomUUID().toString();
+        Coach coach = coaches.getCoachById(dto.getCoachId())
+                .orElseThrow(() -> new IllegalArgumentException("Coach with id " + dto.getCoachId() + " does not exist"));
+
+
         return FitnessClass
                 .builder()
-                .id(String.valueOf(UUID.randomUUID()))
+                .id(id)
                 .name(dto.getName())
                 .startTime(LocalDateTime.parse(dto.getStartTime()))
                 .endTime(LocalDateTime.parse(dto.getEndTime()))
                 .members(memberSet)
-                // todo throw error if the coach does not exist
-                .coach(coaches.getCoachById(dto.getCoachId()).orElseThrow(UnknownError::new))
+                .coach(coach)
                 .build();
     }
 

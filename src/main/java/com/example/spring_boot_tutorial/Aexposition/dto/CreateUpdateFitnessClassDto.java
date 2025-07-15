@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateUpdateFitnessClassDto {
-
+    String id;
     String name;
     String startTime;
     String endTime;
