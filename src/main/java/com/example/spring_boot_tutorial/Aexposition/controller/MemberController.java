@@ -1,9 +1,12 @@
 package com.example.spring_boot_tutorial.Aexposition.controller;
 
+import com.example.spring_boot_tutorial.Aexposition.dto.CreateUpdateMemberDto;
 import com.example.spring_boot_tutorial.Aexposition.dto.MemberDto;
 import com.example.spring_boot_tutorial.Aexposition.mapper.MemberMapperService;
 import com.example.spring_boot_tutorial.Bapplication.members.ConsultAllMembers;
 import com.example.spring_boot_tutorial.Bapplication.members.ConsultAllMembersFromFitnessClass;
+import com.example.spring_boot_tutorial.Bapplication.members.CreateMember;
+import com.example.spring_boot_tutorial.Bapplication.members.DeleteMember;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
 import com.example.spring_boot_tutorial.Ddomain.member.Member;
 import lombok.AccessLevel;
@@ -24,6 +27,8 @@ public class MemberController {
 
     ConsultAllMembers consultAllMembers;
     ConsultAllMembersFromFitnessClass consultAllMembersFromFitnessClass;
+    CreateMember createMember;
+    DeleteMember deleteMember;
     MemberMapperService memberMapperService;
 
     @GetMapping
@@ -62,6 +67,20 @@ public class MemberController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> consultMember(@RequestBody CreateUpdateMemberDto dto) {
+
+        Member memberToBeSaved = memberMapperService.mapDtoToEntityFromDto(dto);
+        createMember.createMember(memberToBeSaved);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteMember(@RequestParam String id) {
+        deleteMember.deleteMember(id);
+        return ResponseEntity.ok("Member deleted successfully");
     }
 
 }

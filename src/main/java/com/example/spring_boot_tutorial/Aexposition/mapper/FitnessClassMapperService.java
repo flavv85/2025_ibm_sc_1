@@ -69,7 +69,7 @@ public class FitnessClassMapperService {
             throw new IllegalArgumentException("Class has " + memberSet.size() + " members. It must be between 3 and 8.");
         }
 
-        //Id+Coach Outside of builder for better readability
+        //id+Coach Outside of builder for better readability
         String id = StringUtils.hasText(dto.getId()) ? dto.getId() : UUID.randomUUID().toString();
         Coach coach = coaches.getCoachById(dto.getCoachId())
                 .orElseThrow(() -> new IllegalArgumentException("Coach with id " + dto.getCoachId() + " does not exist"));

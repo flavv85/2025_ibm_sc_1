@@ -8,4 +8,6 @@ public interface Members {
 
     Optional<Member> getMemberById(String memberId);
 
+    void saveMember(Member member);
+    void delete(Member member);
 }

@@ -19,7 +19,7 @@ public class ConsultAllMembersFromFitnessClass {
     FitnessClasses fitnessClasses;
 
     public Optional<FitnessClass> consultAllMembersFromFitnessClass(String fitnessClassId) {
-        return fitnessClasses.getFitnessClassById(fitnessClassId);
+        return fitnessClasses.getById(fitnessClassId);
     }
 
 }

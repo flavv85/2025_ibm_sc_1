@@ -27,4 +27,14 @@ public class CoachSdj implements Coaches{
         return repository.findById(coachId);
     }
 
+    @Override
+    public void saveCoach(Coach coach) {
+        repository.save(coach);
+    }
+
+    @Override
+    public void delete(Coach coach) {
+        repository.delete(coach);
+    }
+
 }
