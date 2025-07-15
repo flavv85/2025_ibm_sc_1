@@ -95,4 +95,21 @@ public class FitnessClassMapperService {
     }
 
 
+    public FitnessClassDTO mapMinimalDTO(FitnessClass fitnessClass, CreateUpdateFitnessClassDto dto) {
+        boolean hasUpdatedMembers = dto.getMembers() != null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        return new FitnessClassDTO(
+                fitnessClass.getId(),
+                fitnessClass.getName(),
+                fitnessClass.getStartTime().format(formatter),
+                fitnessClass.getEndTime().format(formatter),
+                hasUpdatedMembers
+                        ? fitnessClass.getMembers().stream()
+                        .map(Member::getNickname)
+                        .toList()
+                        : null
+        );
+    }
+
 }

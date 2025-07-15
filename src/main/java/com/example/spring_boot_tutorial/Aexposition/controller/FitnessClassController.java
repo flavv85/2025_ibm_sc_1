@@ -49,12 +49,15 @@ public class FitnessClassController {
     //TODO make a new endpoint or adapt the existing one to return the dto of the updated entity(containing only
     // the name of the fitness class, duration and coach; only add members into dto if the members were updated (hint: should be in mapper)
     @PutMapping
-    public ResponseEntity<Void> update(@RequestParam String fitnessClassId,
-                                       @RequestBody CreateUpdateFitnessClassDto dto) {
-        FitnessClass fitnessClassUpdated = fitnessClassMapperService.mapFromDtoToEntity(dto);
-        updateFitnessClass.update(fitnessClassUpdated, fitnessClassId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<FitnessClassDTO> update(@RequestBody CreateUpdateFitnessClassDto dto) {
+        FitnessClass fitnessClass = fitnessClassMapperService.mapFromDtoToEntity(dto);
+        updateFitnessClass.update(fitnessClass);
+
+        FitnessClassDTO responseDto = fitnessClassMapperService.mapMinimalDTO(fitnessClass, dto);
+
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
 
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam String id) {
