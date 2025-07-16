@@ -15,7 +15,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConsultAllMembers {
 
-    @Autowired
     Members members;
 
     public List<Member> consultAll(){
