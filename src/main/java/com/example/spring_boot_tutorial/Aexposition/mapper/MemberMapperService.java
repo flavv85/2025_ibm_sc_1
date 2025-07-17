@@ -19,7 +19,7 @@ public class MemberMapperService {
     public MemberDto mapMemberFromEntityToDto(Member member, boolean onlyNickname) {
         return onlyNickname
                 ? MemberDto.builder().nickname(member.getNickname()).build()
-                : MemberDto.builder().id(member.getId()).nickname(member.getNickname()).build();
+                : MemberDto.builder().id(member.getId()).nickname(member.getNickname()).status(member.getStatus()).build();
     }
 
     public Member mapDtoToEntityFromDto(CreateUpdateMemberDto dto) {
@@ -28,6 +28,7 @@ public class MemberMapperService {
                 .id(id)
                 .name(dto.getName())
                 .nickname(dto.getNickname())
+                .status(dto.getStatus())
                 .build();
     }
 }

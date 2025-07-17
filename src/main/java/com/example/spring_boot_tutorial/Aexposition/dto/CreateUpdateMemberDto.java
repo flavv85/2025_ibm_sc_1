@@ -1,5 +1,6 @@
 package com.example.spring_boot_tutorial.Aexposition.dto;
 
+import com.example.spring_boot_tutorial.Ddomain.member.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,4 +14,5 @@ public class CreateUpdateMemberDto {
     String id;
     String name;
     String nickname;
+    MemberStatus status;
 }

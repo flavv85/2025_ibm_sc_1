@@ -24,4 +24,9 @@ public class Member {
 
     @Column(name = "member_nickname")
     String nickname;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="member_status")
+    MemberStatus status;
+
 }
