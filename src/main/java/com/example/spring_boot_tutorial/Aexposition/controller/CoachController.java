@@ -4,6 +4,7 @@ import com.example.spring_boot_tutorial.Aexposition.dto.CoachDto;
 import com.example.spring_boot_tutorial.Aexposition.dto.CreateUpdateCoachDto;
 import com.example.spring_boot_tutorial.Aexposition.mapper.CoachMapperService;
 import com.example.spring_boot_tutorial.Bapplication.coach.ConsultAllCoaches;
+import com.example.spring_boot_tutorial.Bapplication.coach.ConsultAllCoachesWithAverageMarkAbove;
 import com.example.spring_boot_tutorial.Bapplication.coach.CreateCoach;
 import com.example.spring_boot_tutorial.Bapplication.coach.DeleteCoach;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coach;
@@ -11,7 +12,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -19,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CoachController {
 
+    ConsultAllCoachesWithAverageMarkAbove consultAllCoachesWithAverageMarkAbove;
     ConsultAllCoaches consultAllCoaches;
     CoachMapperService coachMapperService;
     CreateCoach createCoach;
@@ -44,5 +45,25 @@ public class CoachController {
     public ResponseEntity<String> deleteCoach(@RequestParam String coachId) {
         deleteCoach.deleteCoach(coachId);
         return ResponseEntity.ok("Coach delete successfully");
+    }
+
+    @GetMapping("/mark")
+    public ResponseEntity<List<CoachDto>> getAllCoachesWithAverageMarkAbove(@RequestParam int mark) {
+        List<Coach> coachList = consultAllCoachesWithAverageMarkAbove.ConsultAllCoachesWithAverageMarkAbove(mark);
+        List<CoachDto> response = coachList
+                .stream()
+                .map(value ->coachMapperService.mapCoachFromEntityToDto(value))
+                .toList();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/mark8")
+    public ResponseEntity<List<CoachDto>> getAllCoachesWithAverageMarkAbove8() {
+        List<Coach> coachList = consultAllCoachesWithAverageMarkAbove.ConsultAllCoachesWithAverageMarkAbove(8);
+        List<CoachDto> response = coachList
+                .stream()
+                .map(value ->coachMapperService.mapCoachFromEntityToDto(value))
+                .toList();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

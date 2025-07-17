@@ -11,4 +11,6 @@ public interface Coaches {
     void saveCoach (Coach coach);
 
     void delete(Coach coach);
+
+    List<Coach> getCoachesWithAverageMarkAbove(int mark);
 }
