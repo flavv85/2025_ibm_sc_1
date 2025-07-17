@@ -39,6 +39,11 @@ public class ReviewSdj implements Reviews {
         repository.save(review);
     }
 
+    @Override
+    public boolean existsByMemberId(String memberId){
+        return repository.existsByMemberId(memberId);
+    }
+
 
 
 }

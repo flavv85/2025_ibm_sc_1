@@ -1,5 +1,6 @@
 package com.example.spring_boot_tutorial.Ddomain.Review;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -11,4 +12,6 @@ public interface Reviews {
 
     void delete(Review review);
     void saveReview(Review review);
+
+    boolean existsByMemberId(String memberId);
 }

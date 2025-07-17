@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, String> {
 
+    boolean existsByMemberId(String memberId);
+
     @Query("SELECT r.coachId FROM Review r GROUP BY r.coachId HAVING AVG(r.mark) >= :minMark")
     List<String> findCoachIdsWithAverageMarkAbove(@Param("minMark") int minMark);
 }
