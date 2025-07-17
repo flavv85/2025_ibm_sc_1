@@ -35,7 +35,7 @@ public class FitnessClass {
     LocalDateTime endTime;
 
     @ManyToOne
-    @JoinColumn(name = "COACH_ID")
+    @JoinColumn(name = "COACH_ID", nullable = false)
     Coach coach;
 
     @ManyToMany

@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface FitnessClasses {
     List<FitnessClass> getAllFitnessClasses();
+
+    void addFitnessClass(FitnessClass fitnessClass);
 }
