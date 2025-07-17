@@ -31,4 +31,37 @@ VALUES ('b7b57d69-d9d0-43bf-a30e-39f682853269', SELECT member_id from member whe
 INSERT INTO fitness_classes_members(fitness_class_id, member_id)
 VALUES ('b7b57d69-d9d0-43bf-a30e-39f682853269', SELECT member_id from member where member_nickname = 'Saw');
 
+INSERT INTO review(review_id, coach_id, member_id, mark)
+SELECT
+    RANDOM_UUID(),
+    c.coach_id,
+    m.member_id,
+    9.0
+FROM coach c
+         JOIN member m ON 1=1
+WHERE c.name = 'Coach1'
+  AND m.member_nickname = 'Saw';
+
+
+INSERT INTO review(review_id, coach_id, member_id, mark)
+SELECT
+    RANDOM_UUID(),
+    c.coach_id,
+    m.member_id,
+    8.5
+FROM coach c
+         JOIN member m ON 1=1
+WHERE c.name = 'Coach2'
+  AND m.member_nickname = 'JohnnyR';
+
+INSERT INTO review(review_id, coach_id, member_id, mark)
+SELECT
+    RANDOM_UUID(),
+    c.coach_id,
+    m.member_id,
+    6.0
+FROM coach c
+         JOIN member m ON 1=1
+WHERE c.name = 'Coach1'
+  AND m.member_nickname = 'Norm';
 
