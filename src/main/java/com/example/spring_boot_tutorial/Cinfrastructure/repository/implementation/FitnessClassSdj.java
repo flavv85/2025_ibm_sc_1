@@ -6,7 +6,6 @@ import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClasses;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -18,13 +17,17 @@ import java.util.Optional;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FitnessClassSdj implements FitnessClasses {
 
-    @Autowired
     FitnessClassRepository repository;
 
 
     @Override
     public void saveFitnessClass(FitnessClass fitnessClass) {
         repository.save(fitnessClass);
+    }
+
+    @Override
+    public List<FitnessClass> findByCoach_Id(String coachId) {
+        return repository.findByCoach_Id(coachId);
     }
 
     @Override

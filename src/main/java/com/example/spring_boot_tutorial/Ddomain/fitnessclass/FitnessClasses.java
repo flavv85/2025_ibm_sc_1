@@ -11,6 +11,7 @@ public interface FitnessClasses {
     void updateFitnessClass(FitnessClass fitnessClass);
     // todo combine the 2 methods(save and update) and replace with only one method everywhere in the app
 
+    List<FitnessClass> findByCoach_Id(String coachId);
     Optional<FitnessClass> getById(String id);
 
     void delete(FitnessClass fitnessClass);

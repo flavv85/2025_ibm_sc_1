@@ -18,4 +18,5 @@ public class CreateUpdateFitnessClassDto {
     String endTime;
     String coachId;
     Set<MemberDto> members;
+    Boolean isReady;
 }

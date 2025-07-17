@@ -16,5 +16,6 @@ public class FitnessClassDTO {
      String startTime;
      String endTime;
      List<String> memberNickNames;
+     Boolean isReady;
 
 }

@@ -1,5 +1,6 @@
 package com.example.spring_boot_tutorial.Aexposition.mapper;
 
+import com.example.spring_boot_tutorial.Aexposition.FitnessClassValidator;
 import com.example.spring_boot_tutorial.Aexposition.dto.CreateUpdateFitnessClassDto;
 import com.example.spring_boot_tutorial.Aexposition.dto.FitnessClassDTO;
 import com.example.spring_boot_tutorial.Aexposition.dto.MemberDto;
@@ -28,6 +29,7 @@ public class FitnessClassMapperService {
 
     Members members;
     Coaches coaches;
+    FitnessClassValidator fitnessClassValidator;
 
     public FitnessClassDTO mapFitnessClassFromEntityToDto(FitnessClass fitnessClass) {
         FitnessClassDTO fitnessClassDTO = new FitnessClassDTO();
@@ -39,6 +41,8 @@ public class FitnessClassMapperService {
     }
 
     public FitnessClassDTO mapFitnessClassFromEntityToDTO(FitnessClass fitnessClass,String format) {
+        boolean isReady = fitnessClassValidator.isMemberCountValid(fitnessClass.getMembers());
+
         DateTimeFormatter formatter = switch (format.toUpperCase()) {
             case "FULL" -> DateTimeFormatter.ofPattern("yyyy-MM-dd:HH:mm:ss");
             case "SHORT" -> DateTimeFormatter.ofPattern("yyyy-MM-dd:HH:mm");
@@ -46,15 +50,14 @@ public class FitnessClassMapperService {
             default -> DateTimeFormatter.ofPattern("yyyy-MM-dd:HH:mm:ss"); // fallback
         };
 
-        return new FitnessClassDTO(
-                fitnessClass.getId(),
-                fitnessClass.getName(),
-                fitnessClass.getStartTime().format(formatter),
-                fitnessClass.getEndTime().format(formatter),
-                fitnessClass.getMembers().stream()
-                        .map(Member::getNickname)
-                        .toList()
-        );
+        return FitnessClassDTO.builder()
+                .id(fitnessClass.getId())
+                .name(fitnessClass.getName())
+                .startTime(fitnessClass.getStartTime().format(formatter))
+                .endTime(fitnessClass.getEndTime().format(formatter))
+                .memberNickNames(fitnessClass.getMembers().stream().map(Member::getNickname).toList())
+                .isReady(isReady)
+                .build();
     }
 
     public FitnessClass mapFromDtoToEntity(CreateUpdateFitnessClassDto dto) {
@@ -64,8 +67,7 @@ public class FitnessClassMapperService {
             memberSet = getMembers(memberIds);
         }
 
-
-        if (memberSet.size() <= 2 || memberSet.size() >= 9) {
+        if (!fitnessClassValidator.isMemberCountValid(memberSet)) {
             throw new IllegalArgumentException("Class has " + memberSet.size() + " members. It must be between 3 and 8.");
         }
 
@@ -99,17 +101,16 @@ public class FitnessClassMapperService {
         boolean hasUpdatedMembers = dto.getMembers() != null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        return new FitnessClassDTO(
-                fitnessClass.getId(),
-                fitnessClass.getName(),
-                fitnessClass.getStartTime().format(formatter),
-                fitnessClass.getEndTime().format(formatter),
-                hasUpdatedMembers
-                        ? fitnessClass.getMembers().stream()
-                        .map(Member::getNickname)
-                        .toList()
-                        : null
-        );
+        return FitnessClassDTO.builder()
+                .id(fitnessClass.getId())
+                .name(fitnessClass.getName())
+                .startTime(fitnessClass.getStartTime().format(formatter))
+                .endTime(fitnessClass.getEndTime().format(formatter))
+                .memberNickNames(
+                        hasUpdatedMembers
+                                ? fitnessClass.getMembers().stream().map(Member::getNickname).toList()
+                                : null)
+                .build();
     }
 
 }

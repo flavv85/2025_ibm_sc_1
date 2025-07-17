@@ -2,6 +2,7 @@ package com.example.spring_boot_tutorial.Ddomain.fitnessclass;
 
 import com.example.spring_boot_tutorial.Ddomain.coach.Coach;
 import com.example.spring_boot_tutorial.Ddomain.member.Member;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -43,6 +44,10 @@ public class FitnessClass {
             joinColumns = @JoinColumn(name = "fitness_class_id"),
             inverseJoinColumns = @JoinColumn(name = "member_id"))
     Set<Member> members = new HashSet<>();
+
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    Boolean isReady;
 
     public Long duration() {
         return Duration.between(this.startTime, this.endTime).toHours();
