@@ -50,14 +50,11 @@ public class FitnessClassController {
     // the name of the fitness class, duration and coach; only add members into dto if the members were updated (hint: should be in mapper)
     @PutMapping
     public ResponseEntity<FitnessClassDTO> update(@RequestBody CreateUpdateFitnessClassDto dto) {
-        FitnessClass fitnessClass = fitnessClassMapperService.mapFromDtoToEntity(dto);
-        updateFitnessClass.update(fitnessClass);
-
-        FitnessClassDTO responseDto = fitnessClassMapperService.mapMinimalDTO(fitnessClass, dto);
-
+        FitnessClassDTO responseDto = fitnessClassMapperService.mapMinimalDTO(dto);
+        FitnessClass fitnessClassToBeSaved = fitnessClassMapperService.mapFromDtoToEntity(dto);
+        updateFitnessClass.update(fitnessClassToBeSaved);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
-
 
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam String id) {

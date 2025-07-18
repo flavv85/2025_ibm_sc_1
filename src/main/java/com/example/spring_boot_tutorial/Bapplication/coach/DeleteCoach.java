@@ -1,5 +1,6 @@
 package com.example.spring_boot_tutorial.Bapplication.coach;
 
+import com.example.spring_boot_tutorial.Ddomain.Exception.UnknownObjectException;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coach;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coaches;
 import com.example.spring_boot_tutorial.Ddomain.coach.Exception.CoachDeletionException;
@@ -22,9 +23,9 @@ public class DeleteCoach {
     public void deleteCoach(String id) {
         List<FitnessClass> classes = fitnessClasses.findByCoach_Id(id);
         if (!classes.isEmpty()) {
-            throw new CoachDeletionException("Cannot delete coach with id " + id + " because they have assigned fitness classes.");
+            throw new CoachDeletionException(String.format("Coach with id %s cannot be deleted because it has %d classes", id, classes.size()));
         }
-        Coach coachToBeDeleted = coaches.getCoachById(id).orElseThrow(UnknownError::new);
+        Coach coachToBeDeleted = coaches.getCoachById(id).orElseThrow(()->new UnknownObjectException(String.format("Coach with id %s does not exist", id)));
         coaches.delete(coachToBeDeleted);
     }
 }

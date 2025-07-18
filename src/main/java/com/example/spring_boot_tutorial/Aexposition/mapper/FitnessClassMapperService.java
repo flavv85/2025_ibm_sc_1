@@ -4,9 +4,12 @@ import com.example.spring_boot_tutorial.Aexposition.FitnessClassValidator;
 import com.example.spring_boot_tutorial.Aexposition.dto.CreateUpdateFitnessClassDto;
 import com.example.spring_boot_tutorial.Aexposition.dto.FitnessClassDTO;
 import com.example.spring_boot_tutorial.Aexposition.dto.MemberDto;
+import com.example.spring_boot_tutorial.Ddomain.Exception.BussinessException;
+import com.example.spring_boot_tutorial.Ddomain.Exception.UnknownObjectException;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coach;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coaches;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
+import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClasses;
 import com.example.spring_boot_tutorial.Ddomain.member.Member;
 import com.example.spring_boot_tutorial.Ddomain.member.Members;
 import lombok.AccessLevel;
@@ -18,6 +21,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,16 +33,8 @@ public class FitnessClassMapperService {
 
     Members members;
     Coaches coaches;
+    FitnessClasses fitnessClasses;
     FitnessClassValidator fitnessClassValidator;
-
-    public FitnessClassDTO mapFitnessClassFromEntityToDto(FitnessClass fitnessClass) {
-        FitnessClassDTO fitnessClassDTO = new FitnessClassDTO();
-        fitnessClassDTO.builder()
-                .id(fitnessClass.getId())
-                .name(fitnessClass.getName())
-                .build();
-        return fitnessClassDTO;
-    }
 
     public FitnessClassDTO mapFitnessClassFromEntityToDTO(FitnessClass fitnessClass,String format) {
         boolean isReady = fitnessClassValidator.isMemberCountValid(fitnessClass.getMembers());
@@ -61,36 +57,44 @@ public class FitnessClassMapperService {
     }
 
     public FitnessClass mapFromDtoToEntity(CreateUpdateFitnessClassDto dto) {
-        Set<Member> memberSet = new HashSet<>();
+        Set<Member> newMembers = new HashSet<>();
         if (dto.getMembers() != null) {
-            Set<String> memberIds = dto.getMembers().stream().map(MemberDto::getId).collect(Collectors.toSet());
-            memberSet = getMembers(memberIds);
+            Set<String> memberIds = dto.getMembers().stream()
+                    .map(MemberDto::getId)
+                    .collect(Collectors.toSet());
+            newMembers = getMembers(memberIds);
         }
 
-        if (!fitnessClassValidator.isMemberCountValid(memberSet)) {
-            throw new IllegalArgumentException("Class has " + memberSet.size() + " members. It must be between 3 and 8.");
+        if (!fitnessClassValidator.isMemberCountValid(newMembers)) {
+            throw new BussinessException(String.format("Class has %d members. It must be between 3 and 8.", newMembers.size()));
         }
 
-        //id+Coach Outside of builder for better readability
-        /*
-        1. daca este update e corect ce scris, adica id-ul trebuie sa existe in db, altfel aruncam eroare.
-        2. daca este new entity ??? vom arunca eroare de fiecare data?
-         */
-        String id = StringUtils.hasText(dto.getId()) ? dto.getId() : UUID.randomUUID().toString();
-        Coach coach = coaches.getCoachById(dto.getCoachId())
-                .orElseThrow(() -> new IllegalArgumentException("Coach with id " + dto.getCoachId() + " does not exist"));
+        FitnessClass fitnessClass;
+        boolean isUpdate = StringUtils.hasText(dto.getId());
 
+        if (isUpdate) {
+            fitnessClass = fitnessClasses.getFitnessClassById(dto.getId())
+                    .orElseThrow(() -> new UnknownObjectException(String.format("Fitness class with id %s does not exist", dto.getId())));
+        } else {
+            fitnessClass = new FitnessClass();
+            fitnessClass.setId(UUID.randomUUID().toString());
+        }
+        fitnessClass.setName(dto.getName());
+        fitnessClass.setStartTime(LocalDateTime.parse(dto.getStartTime()));
+        fitnessClass.setEndTime(LocalDateTime.parse(dto.getEndTime()));
 
-        return FitnessClass
-                .builder()
-                .id(id)
-                .name(dto.getName())
-                .startTime(LocalDateTime.parse(dto.getStartTime()))
-                .endTime(LocalDateTime.parse(dto.getEndTime()))
-                .members(memberSet)
-                .coach(coach)
-                .build();
+        fitnessClass.getMembers().clear();
+        fitnessClass.getMembers().addAll(newMembers);
+
+        if (StringUtils.hasText(dto.getCoachId())) {
+            Coach coach = coaches.getCoachById(dto.getCoachId())
+                    .orElseThrow(() -> new UnknownObjectException(String.format("Coach with id %s does not exist", dto.getCoachId())));
+            fitnessClass.setCoach(coach);
+        }
+        return fitnessClass;
     }
+
+
 
     private Set<Member> getMembers(Set<String> memberDtoSet) {
         Set<Member> memberSet = new HashSet<>();
@@ -101,22 +105,33 @@ public class FitnessClassMapperService {
     }
 
 
-    public FitnessClassDTO mapMinimalDTO(FitnessClass fitnessClass, CreateUpdateFitnessClassDto dto) {
-        // compare members din fitness class vs members din dto si apoi sa mentionam nicknames-urile celor care nu se regasesc in fitness class si exista in dto.members()
-        // removeAll() from one set si daca ce ramane nu este empty atunci aceia sunt membrii noi
-        boolean hasUpdatedMembers = dto.getMembers() != null;
+    public FitnessClassDTO mapMinimalDTO(CreateUpdateFitnessClassDto dto) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        FitnessClass fitnessClass = fitnessClasses.getFitnessClassById(dto.getId())
+                .orElseThrow(() -> new UnknownObjectException(String.format("Fitness class with id %s does not exist", dto.getId())));
+
+            Set<String> existingMemberIds = fitnessClass.getMembers().stream()
+                        .map(Member::getId)
+                        .collect(Collectors.toSet());
+
+            List<String>  newMemberNicknames = dto.getMembers().stream()
+                        .filter(m -> !existingMemberIds.contains(m.getId()))
+                        .map(MemberDto::getNickname)
+                        .toList();
+
+
 
         return FitnessClassDTO.builder()
                 .id(fitnessClass.getId())
                 .name(fitnessClass.getName())
                 .startTime(fitnessClass.getStartTime().format(formatter))
                 .endTime(fitnessClass.getEndTime().format(formatter))
-                .memberNickNames(
-                        hasUpdatedMembers
-                                ? fitnessClass.getMembers().stream().map(Member::getNickname).toList()
-                                : null)
+                .coachId(dto.getCoachId())
+                .memberNickNames(newMemberNicknames)
+                .isReady(fitnessClass.getIsReady())
                 .build();
     }
+
+
 
 }

@@ -44,7 +44,7 @@ public class CoachController {
     @DeleteMapping
     public ResponseEntity<String> deleteCoach(@RequestParam String coachId) {
         deleteCoach.deleteCoach(coachId);
-        return ResponseEntity.ok("Coach delete successfully");
+        return ResponseEntity.ok("Coach deleted successfully");
     }
 
     @GetMapping("/mark")

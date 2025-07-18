@@ -1,6 +1,7 @@
 package com.example.spring_boot_tutorial.Aexposition.mapper;
 
 import com.example.spring_boot_tutorial.Aexposition.dto.*;
+import com.example.spring_boot_tutorial.Ddomain.Exception.UnknownObjectException;
 import com.example.spring_boot_tutorial.Ddomain.Review.Review;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coach;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coaches;
@@ -28,9 +29,9 @@ public class ReviewMapperService {
 
     public ReviewDto mapFromDomainToDto(Review domain) {
         Member member = members.getMemberById(domain.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + domain.getMemberId()));
+                .orElseThrow(() -> new UnknownObjectException(String.format("Member not found with id: %s" ,domain.getMemberId())));
         Coach coach = coaches.getCoachById(domain.getCoachId())
-                .orElseThrow(() -> new IllegalArgumentException("Coach not found with id: " + domain.getCoachId()));
+                .orElseThrow(() -> new UnknownObjectException(String.format("Coach not found with id: %s" ,domain.getCoachId())));
 
         MemberDto memberDto = memberMapperService.mapMemberFromEntityToDto(member,true);
         CoachDto coachDto = coachMapperService.mapCoachFromEntityToDto(coach);
@@ -45,9 +46,9 @@ public class ReviewMapperService {
     public Review mapDtoToDomain(CreateUpdateReviewDto dto) {
         String id = StringUtils.hasText(dto.getId()) ? dto.getId() : UUID.randomUUID().toString();
         Member member = members.getMemberById(dto.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + dto.getMemberId()));
+                .orElseThrow(() -> new UnknownObjectException(String.format("Member not found with id: %s" ,dto.getMemberId())));
         Coach coach = coaches.getCoachById(dto.getCoachId())
-                .orElseThrow(() -> new IllegalArgumentException("Coach not found with id: " + dto.getCoachId()));
+                .orElseThrow(() -> new UnknownObjectException(String.format("Coach not found with id: %s" ,dto.getCoachId())));
 
         MemberDto memberDto = memberMapperService.mapMemberFromEntityToDto(member,false);
         CoachDto coachDto = coachMapperService.mapCoachFromEntityToDto(coach);

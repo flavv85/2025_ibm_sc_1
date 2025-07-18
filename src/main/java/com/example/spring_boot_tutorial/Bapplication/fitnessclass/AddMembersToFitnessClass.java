@@ -1,5 +1,6 @@
 package com.example.spring_boot_tutorial.Bapplication.fitnessclass;
 
+import com.example.spring_boot_tutorial.Ddomain.Exception.UnknownObjectException;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClasses;
 import com.example.spring_boot_tutorial.Ddomain.member.Member;
@@ -32,7 +33,7 @@ public class AddMembersToFitnessClass {
             if (member.isPresent()) {
                 memberSet.add(member.get());
             } else {
-                System.out.println("Warning: Member with ID " + id + " does not exist.");
+                throw new UnknownObjectException(String.format("Member with id %s does not exist", id));
             }
         });
 
