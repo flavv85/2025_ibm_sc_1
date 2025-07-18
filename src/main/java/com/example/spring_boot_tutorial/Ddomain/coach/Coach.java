@@ -29,14 +29,14 @@ public class Coach {
     // we need methods for bidirectional @OneToMany and @ManyToOne relations
     // for adding and deleting children (fitness classes) from parent entity (coach)
 
-//    public void addFitnessClass(FitnessClass fitnessClass) {
-//        fitnessClasses.add(fitnessClass);
-//        fitnessClass.setCoach(this);
-//    }
-//
-//    public void removeFitnessClass(FitnessClass fitnessClass) {
-//        fitnessClasses.remove(fitnessClass);
-//        fitnessClass.setCoach(null);
-//    }
+   public void addFitnessClass(FitnessClass fitnessClass) {
+        fitnessClasses.add(fitnessClass);
+        fitnessClass.setCoach(this);
+    }
+
+   public void removeFitnessClass(FitnessClass fitnessClass) {
+        fitnessClasses.remove(fitnessClass);
+        fitnessClass.setCoach(null);
+    }
 
 }

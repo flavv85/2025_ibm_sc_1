@@ -47,21 +47,36 @@ public class FitnessClassMapperService {
 
     // todo adapt method to also be used for updating (hint need and id, if null -> new, else will update)
     public FitnessClass mapToEntity(CreateUpdateFitnessClassDto dto) {
-        Set<Member> memberSet = new HashSet<>();
+        return mapToEntity(dto, null);
+    }
+
+
+    public FitnessClass mapToEntity(CreateUpdateFitnessClassDto dto,String existingId) {
+
+        String id = (existingId != null && !existingId.isBlank())
+                ? existingId
+                : UUID.randomUUID().toString();
+
+        Set<Member> memberSet = null;
         if (dto.getMemberIds() != null) {
-            Set<String> memberIds = new HashSet<>(dto.getMemberIds());
-            memberSet = getMembers(memberIds);
+            memberSet = getMembers(new HashSet<>(dto.getMemberIds()));
         }
 
         return FitnessClass
                 .builder()
-                .id(String.valueOf(UUID.randomUUID()))
+                .id(id)
                 .name(dto.getName())
-                .startTime(LocalDateTime.parse(dto.getStartTime()))
-                .endTime(LocalDateTime.parse(dto.getEndTime()))
+                .startTime(dto.getStartTime()==null?null
+                        :LocalDateTime.parse((dto.getStartTime())))
+                .endTime(dto.getEndTime()==null?null
+                        :LocalDateTime.parse(dto.getEndTime()))
                 .members(memberSet)
-                // todo throw error if the coach does not exist
-                .coach(coaches.getCoachById(dto.getCoachId()).orElseThrow(UnknownError::new))
+                .coach(
+                dto.getCoachId() == null ? null
+                        : coaches.getCoachById(dto.getCoachId())
+                        .orElseThrow(() ->
+                                new IllegalArgumentException("Coach not found: " + dto.getCoachId()))
+        )
                 .build();
     }
 

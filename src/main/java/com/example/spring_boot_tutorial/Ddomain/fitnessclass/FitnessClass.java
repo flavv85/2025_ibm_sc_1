@@ -49,5 +49,7 @@ public class FitnessClass {
         return Duration.between(this.startTime, this.endTime).toHours();
     }
 
+
+
 }
 
