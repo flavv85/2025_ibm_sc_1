@@ -18,9 +18,6 @@ public class UpdateCoach {
     public void updateCoach(String id, Coach coach) {
         Coach existingCoach = coaches.getCoachById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Coach not found"));
-
-        existingCoach.setName(coach.getName());
-
         coaches.saveCoach(existingCoach);
     }
 }

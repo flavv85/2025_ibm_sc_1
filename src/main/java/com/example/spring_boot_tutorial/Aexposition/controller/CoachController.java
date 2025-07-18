@@ -34,24 +34,24 @@ public class CoachController {
 
     @PostMapping
     public ResponseEntity<Coach> create(@RequestBody ConsultCoachDto dto) {
-        Coach coachToBeSaved = coachMapperService.mapToEntity(dto);
+        Coach coachToBeSaved = coachMapperService.mapToEntity(dto, null);
         createCoach.createCoach(coachToBeSaved);
         return ResponseEntity.status(HttpStatus.CREATED).body(coachToBeSaved);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable String id, @RequestBody ConsultCoachDto dto) {
         System.out.println("COACH ID PRIMIT: " + id);
-        Coach coach = coachMapperService.mapToEntity(dto);
+        Coach coach = coachMapperService.mapToEntity(dto, id);
         updateCoach.updateCoach(id, coach);
         return ResponseEntity.noContent().build();
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         deleteCoach.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 
 
 }

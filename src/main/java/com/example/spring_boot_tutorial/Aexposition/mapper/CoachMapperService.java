@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.UUID;
 
@@ -33,9 +34,10 @@ public class CoachMapperService {
         fitnessClassCoachDetailsDto.setDuration(fitnessClassCoachDetailsDto.appendHourToDuration(String.valueOf(fitnessClass.duration())));
         return fitnessClassCoachDetailsDto;
     }
-    public Coach mapToEntity(ConsultCoachDto dto) {
+    public Coach mapToEntity(ConsultCoachDto dto, String coachId) {
+        String id = StringUtils.hasText(coachId) ? coachId : UUID.randomUUID().toString();
         return Coach.builder()
-                .id(String.valueOf(UUID.randomUUID()))
+                .id(id)
                 .name(dto.getName())
                 .build();
     }

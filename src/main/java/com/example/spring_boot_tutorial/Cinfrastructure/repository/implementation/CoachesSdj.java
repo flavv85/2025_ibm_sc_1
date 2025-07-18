@@ -3,7 +3,6 @@ package com.example.spring_boot_tutorial.Cinfrastructure.repository.implementati
 import com.example.spring_boot_tutorial.Cinfrastructure.repository.CoachRepository;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coach;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coaches;
-import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -36,6 +35,5 @@ public class CoachesSdj implements Coaches {
     public void deleteCoach(Coach coach) {
         coachRepository.delete(coach);
     }
-
 
 }
