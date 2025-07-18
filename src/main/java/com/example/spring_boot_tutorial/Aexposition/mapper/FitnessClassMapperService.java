@@ -68,30 +68,24 @@ public class FitnessClassMapperService {
         if (!fitnessClassValidator.isMemberCountValid(newMembers)) {
             throw new BussinessException(String.format("Class has %d members. It must be between 3 and 8.", newMembers.size()));
         }
+        LocalDateTime startTime = LocalDateTime.parse(dto.getStartTime());
+        LocalDateTime endTime = LocalDateTime.parse(dto.getEndTime());
+        String id = StringUtils.hasText(dto.getId()) ? dto.getId() : UUID.randomUUID().toString();
 
-        FitnessClass fitnessClass;
-        boolean isUpdate = StringUtils.hasText(dto.getId());
-
-        if (isUpdate) {
-            fitnessClass = fitnessClasses.getFitnessClassById(dto.getId())
-                    .orElseThrow(() -> new UnknownObjectException(String.format("Fitness class with id %s does not exist", dto.getId())));
-        } else {
-            fitnessClass = new FitnessClass();
-            fitnessClass.setId(UUID.randomUUID().toString());
-        }
-        fitnessClass.setName(dto.getName());
-        fitnessClass.setStartTime(LocalDateTime.parse(dto.getStartTime()));
-        fitnessClass.setEndTime(LocalDateTime.parse(dto.getEndTime()));
-
-        fitnessClass.getMembers().clear();
-        fitnessClass.getMembers().addAll(newMembers);
-
+        Coach coach = null;
         if (StringUtils.hasText(dto.getCoachId())) {
-            Coach coach = coaches.getCoachById(dto.getCoachId())
+            coach = coaches.getCoachById(dto.getCoachId())
                     .orElseThrow(() -> new UnknownObjectException(String.format("Coach with id %s does not exist", dto.getCoachId())));
-            fitnessClass.setCoach(coach);
         }
-        return fitnessClass;
+
+        return FitnessClass.builder()
+                .id(id)
+                .name(dto.getName())
+                .startTime(startTime)
+                .endTime(endTime)
+                .members(newMembers)
+                .coach(coach)
+                .build();
     }
 
 
