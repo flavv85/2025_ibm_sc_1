@@ -3,7 +3,7 @@ package com.example.spring_boot_tutorial.Bapplication.coach;
 import com.example.spring_boot_tutorial.Ddomain.Exception.UnknownObjectException;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coach;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coaches;
-import com.example.spring_boot_tutorial.Ddomain.coach.Exception.CoachDeletionException;
+import com.example.spring_boot_tutorial.Ddomain.Exception.CoachDeletionException;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClasses;
 import lombok.AccessLevel;

@@ -1,4 +1,4 @@
-package com.example.spring_boot_tutorial.Ddomain.coach.Exception;
+package com.example.spring_boot_tutorial.Ddomain.Exception;
 
 public class CoachDeletionException extends RuntimeException {
 

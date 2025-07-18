@@ -2,7 +2,7 @@ package com.example.spring_boot_tutorial.Aexposition.config;
 
 import com.example.spring_boot_tutorial.Ddomain.Exception.BussinessException;
 import com.example.spring_boot_tutorial.Ddomain.Exception.UnknownObjectException;
-import com.example.spring_boot_tutorial.Ddomain.coach.Exception.CoachDeletionException;
+import com.example.spring_boot_tutorial.Ddomain.Exception.CoachDeletionException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
