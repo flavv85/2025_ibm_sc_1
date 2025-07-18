@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,7 +35,7 @@ public class FitnessClass {
     LocalDateTime endTime;
 
     @ManyToOne
-    @JoinColumn(name = "COACH_ID")
+    @JoinColumn(name = "COACH_ID", nullable = false)
     Coach coach;
 
     @ManyToMany
@@ -42,5 +43,11 @@ public class FitnessClass {
             joinColumns = @JoinColumn(name = "fitness_class_id"),
             inverseJoinColumns = @JoinColumn(name = "member_id"))
     Set<Member> members = new HashSet<>();
+
+    // helper class method to be reused when ever duration between start and end time is needed.
+    public Long duration() {
+        return Duration.between(this.startTime, this.endTime).toHours();
+    }
+
 }
 

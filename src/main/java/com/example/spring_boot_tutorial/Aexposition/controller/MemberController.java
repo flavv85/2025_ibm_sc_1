@@ -4,7 +4,7 @@ import com.example.spring_boot_tutorial.Aexposition.dto.MemberDto;
 import com.example.spring_boot_tutorial.Aexposition.mapper.MemberMapperService;
 import com.example.spring_boot_tutorial.Bapplication.members.ConsultAllMembers;
 import com.example.spring_boot_tutorial.Ddomain.member.Member;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,18 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-//@AllArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/api/member")
 public class MemberController {
 
-    public MemberController(ConsultAllMembers consultAllMembers) {
-        this.consultAllMembers = consultAllMembers;
-    }
-
-    @Autowired
     ConsultAllMembers consultAllMembers;
-
-    @Autowired
     MemberMapperService memberMapperService;
 
     @GetMapping
