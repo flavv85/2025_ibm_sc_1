@@ -27,4 +27,17 @@ public class CoachesSdj implements Coaches {
     public Optional<Coach> getCoachById(String coachId) {
         return coachRepository.findById(coachId);
     }
+
+    @Override
+    public void saveCoach(Coach coach) {
+        coachRepository.save(coach);
+    }
+    @Override
+    public void deleteCoach(Coach coach) {
+        coachRepository.delete(coach);
+    }
+    @Override
+    public void updateCoach(Coach coach) {
+        coachRepository.save(coach);
+    }
 }
