@@ -7,4 +7,10 @@ public interface Coaches {
     List<Coach> consultAllCoaches();
 
     Optional<Coach> getCoachById(String coachId);
+
+    void createCoach(Coach coach);
+
+    void updateCoach(Coach coach);
+
+    void deleteCoach(Coach coach);
 }
