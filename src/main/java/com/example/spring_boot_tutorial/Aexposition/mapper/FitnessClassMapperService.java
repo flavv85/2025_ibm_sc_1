@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -51,13 +52,13 @@ public class FitnessClassMapperService {
     }
 
 
-    public FitnessClass mapToEntity(CreateUpdateFitnessClassDto dto,String existingId) {
+    public FitnessClass mapToEntity(CreateUpdateFitnessClassDto dto, String existingId) {
 
-        String id = (existingId != null && !existingId.isBlank())
+        String id = (StringUtils.hasText(existingId))
                 ? existingId
                 : UUID.randomUUID().toString();
 
-        Set<Member> memberSet = null;
+        Set<Member> memberSet = new HashSet<>();
         if (dto.getMemberIds() != null) {
             memberSet = getMembers(new HashSet<>(dto.getMemberIds()));
         }
@@ -66,17 +67,14 @@ public class FitnessClassMapperService {
                 .builder()
                 .id(id)
                 .name(dto.getName())
-                .startTime(dto.getStartTime()==null?null
-                        :LocalDateTime.parse((dto.getStartTime())))
-                .endTime(dto.getEndTime()==null?null
-                        :LocalDateTime.parse(dto.getEndTime()))
+                .startTime(dto.getStartTime() == null ? null : LocalDateTime.parse((dto.getStartTime())))
+                .endTime(dto.getEndTime() == null ? null : LocalDateTime.parse(dto.getEndTime()))
                 .members(memberSet)
                 .coach(
-                dto.getCoachId() == null ? null
-                        : coaches.getCoachById(dto.getCoachId())
-                        .orElseThrow(() ->
-                                new IllegalArgumentException("Coach not found: " + dto.getCoachId()))
-        )
+                        dto.getCoachId() == null ? null
+                                : coaches.getCoachById(dto.getCoachId())
+                                .orElseThrow(() -> new IllegalArgumentException("Coach not found: " + dto.getCoachId()))
+                )
                 .build();
     }
 
