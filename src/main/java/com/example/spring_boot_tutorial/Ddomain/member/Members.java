@@ -7,4 +7,10 @@ public interface Members {
     List<Member> getAllMembers();
 
     Optional<Member> getMemberById(String memberId);
+
+    void createMember(Member member);
+
+    void updateMember(Member member);
+
+    void deleteMember(Member member);
 }

@@ -27,4 +27,19 @@ public class MembersSdj implements Members {
     public Optional<Member> getMemberById(String memberId) {
         return repository.findById(memberId);
     }
+
+    @Override
+    public void createMember(Member member) {
+        repository.save(member);
+    }
+
+    @Override
+    public void updateMember(Member member) {
+        repository.save(member);
+    }
+
+    @Override
+    public void deleteMember(Member member) {
+        repository.delete(member);
+    }
 }
