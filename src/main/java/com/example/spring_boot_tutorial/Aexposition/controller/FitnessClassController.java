@@ -7,12 +7,14 @@ import com.example.spring_boot_tutorial.Aexposition.mapper.FitnessClassMapperSer
 import com.example.spring_boot_tutorial.Bapplication.fitnessClass.*;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/fitness-class")
@@ -28,8 +30,10 @@ public class FitnessClassController {
 
     @GetMapping
     public ResponseEntity<List<ConsultFitnessClassDTO>> consultAll() {
+        log.info("Consulting all fitness classed");
         List<FitnessClass> fitnessClasses = consultAllFitnessClasses.consultAll();
         List<ConsultFitnessClassDTO> fitnessClassDtoList = fitnessClasses.stream().map(fitnessClassMapperService::mapToDto).toList();
+        log.info("Done consulting all fitness classed");
         return new ResponseEntity<>(fitnessClassDtoList, HttpStatus.OK);
     }
 

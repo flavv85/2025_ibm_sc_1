@@ -6,10 +6,12 @@ import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClasses;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -22,9 +24,10 @@ public class CreateFitnessClass {
 
         //todo validate if no if members is < 3 or > 8 throw an error saying that it needs to be between 3 and 8 members
         int numberOfMembers = fitnessClass.getMembers().size();
-        if (numberOfMembers < 3 || numberOfMembers > 8) {
-            throw new BusinessException(String.format("Number of members must be between 3 and 8 and actual number is %s", numberOfMembers));
+            if (numberOfMembers < 3 || numberOfMembers > 8) {
+                throw new BusinessException(String.format("Number of members must be between 3 and 8 and actual number is %s", numberOfMembers));
         }
+
         fitnessClasses.saveFitnessClass(fitnessClass);
     }
 }
