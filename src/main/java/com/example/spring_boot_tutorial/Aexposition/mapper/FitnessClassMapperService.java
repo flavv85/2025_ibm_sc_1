@@ -3,6 +3,7 @@ package com.example.spring_boot_tutorial.Aexposition.mapper;
 import com.example.spring_boot_tutorial.Aexposition.dto.ConsultFitnessClassDTO;
 import com.example.spring_boot_tutorial.Aexposition.dto.CreateUpdateFitnessClassDto;
 import com.example.spring_boot_tutorial.Ddomain.coach.Coaches;
+import com.example.spring_boot_tutorial.Ddomain.exceptions.UnknownObjectException;
 import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
 import com.example.spring_boot_tutorial.Ddomain.member.Member;
 import com.example.spring_boot_tutorial.Ddomain.member.Members;
@@ -61,7 +62,8 @@ public class FitnessClassMapperService {
                 .endTime(LocalDateTime.parse(dto.getEndTime()))
                 .members(memberSet)
                 // todo throw error if the coach does not exist
-                .coach(coaches.getCoachById(dto.getCoachId()).orElseThrow(UnknownError::new))
+                .coach(coaches.getCoachById(dto.getCoachId()).orElseThrow(
+                        () -> new UnknownObjectException(String.format("The coach with id %s was not found", dto.getCoachId()))))
                 .build();
     }
 
