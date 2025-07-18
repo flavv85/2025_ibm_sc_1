@@ -72,6 +72,10 @@ public class FitnessClassMapperService {
         }
 
         //id+Coach Outside of builder for better readability
+        /*
+        1. daca este update e corect ce scris, adica id-ul trebuie sa existe in db, altfel aruncam eroare.
+        2. daca este new entity ??? vom arunca eroare de fiecare data?
+         */
         String id = StringUtils.hasText(dto.getId()) ? dto.getId() : UUID.randomUUID().toString();
         Coach coach = coaches.getCoachById(dto.getCoachId())
                 .orElseThrow(() -> new IllegalArgumentException("Coach with id " + dto.getCoachId() + " does not exist"));
@@ -98,6 +102,8 @@ public class FitnessClassMapperService {
 
 
     public FitnessClassDTO mapMinimalDTO(FitnessClass fitnessClass, CreateUpdateFitnessClassDto dto) {
+        // compare members din fitness class vs members din dto si apoi sa mentionam nicknames-urile celor care nu se regasesc in fitness class si exista in dto.members()
+        // removeAll() from one set si daca ce ramane nu este empty atunci aceia sunt membrii noi
         boolean hasUpdatedMembers = dto.getMembers() != null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
