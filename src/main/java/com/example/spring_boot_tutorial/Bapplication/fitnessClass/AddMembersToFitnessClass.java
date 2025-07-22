@@ -26,11 +26,19 @@ public class AddMembersToFitnessClass {
     public void addMembers(String fitnessClassId, List<String> memberIds) {
         FitnessClass fitnessClass = consultFitnessClassById.consult(fitnessClassId);
         Set<Member> memberSet = new HashSet<>();
-        memberIds.forEach(v -> {
-            Optional<Member> member = members.getMemberById(v);
-            member.ifPresent(memberSet::add);
-        });
-        //TODO add a validation if all members exist by id if not don't stop execution, just log the error
+        List<String> missingIds = new ArrayList<>();
+
+        for (String memberId : memberIds) {
+            Optional<Member> optionalMember = members.getMemberById(memberId);
+            if (optionalMember.isPresent()) {
+                memberSet.add(optionalMember.get());
+            } else {
+                missingIds.add(memberId);
+                log.warn("Member with ID [{}] does not exist.", memberId);
+            }
+        }
+
+
 
         fitnessClass.setMembers(memberSet);
         fitnessClasses.updateFitnessClass(fitnessClass);
