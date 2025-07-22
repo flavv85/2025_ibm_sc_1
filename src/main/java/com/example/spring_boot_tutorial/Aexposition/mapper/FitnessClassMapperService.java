@@ -10,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -48,33 +47,21 @@ public class FitnessClassMapperService {
 
     // todo adapt method to also be used for updating (hint need and id, if null -> new, else will update)
     public FitnessClass mapToEntity(CreateUpdateFitnessClassDto dto) {
-        return mapToEntity(dto, null);
-    }
-
-
-    public FitnessClass mapToEntity(CreateUpdateFitnessClassDto dto, String existingId) {
-
-        String id = (StringUtils.hasText(existingId))
-                ? existingId
-                : UUID.randomUUID().toString();
-
         Set<Member> memberSet = new HashSet<>();
         if (dto.getMemberIds() != null) {
-            memberSet = getMembers(new HashSet<>(dto.getMemberIds()));
+            Set<String> memberIds = new HashSet<>(dto.getMemberIds());
+            memberSet = getMembers(memberIds);
         }
 
         return FitnessClass
                 .builder()
-                .id(id)
+                .id(String.valueOf(UUID.randomUUID()))
                 .name(dto.getName())
-                .startTime(dto.getStartTime() == null ? null : LocalDateTime.parse((dto.getStartTime())))
-                .endTime(dto.getEndTime() == null ? null : LocalDateTime.parse(dto.getEndTime()))
+                .startTime(LocalDateTime.parse(dto.getStartTime()))
+                .endTime(LocalDateTime.parse(dto.getEndTime()))
                 .members(memberSet)
-                .coach(
-                        dto.getCoachId() == null ? null
-                                : coaches.getCoachById(dto.getCoachId())
-                                .orElseThrow(() -> new IllegalArgumentException("Coach not found: " + dto.getCoachId()))
-                )
+                // todo throw error if the coach does not exist
+                .coach(coaches.getCoachById(dto.getCoachId()).orElseThrow(UnknownError::new))
                 .build();
     }
 
