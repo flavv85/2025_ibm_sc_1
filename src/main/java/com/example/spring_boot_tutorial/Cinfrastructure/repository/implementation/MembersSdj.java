@@ -1,6 +1,7 @@
 package com.example.spring_boot_tutorial.Cinfrastructure.repository.implementation;
 
 import com.example.spring_boot_tutorial.Cinfrastructure.repository.MemberRepository;
+import com.example.spring_boot_tutorial.Ddomain.fitnessclass.FitnessClass;
 import com.example.spring_boot_tutorial.Ddomain.member.Member;
 import com.example.spring_boot_tutorial.Ddomain.member.Members;
 import lombok.AccessLevel;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 @AllArgsConstructor
@@ -28,5 +30,20 @@ public class MembersSdj implements Members {
     @Override
     public Optional<Member> getMemberById(String memberId) {
         return repository.findById(memberId);
+    }
+
+    @Override
+    public Optional<Set<Member>> GetMemberByFitnessClass(FitnessClass fitnessClass) {
+        return Optional.empty();
+    }
+
+    @Override
+    public void CreateOrUpdate(Member member) {
+
+    }
+
+    @Override
+    public void DeleteMember(Member member) {
+
     }
 }
