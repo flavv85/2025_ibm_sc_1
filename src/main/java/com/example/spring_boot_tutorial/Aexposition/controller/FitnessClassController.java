@@ -44,8 +44,7 @@ public class FitnessClassController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    //TODO make a new endpoint or adapt the existing one to return the dto of the updated entity(containing only
-    // the name of the fitness class, duration and coach; only add members into dto if the members were updated (hint: should be in mapper)
+
     @PutMapping
     public ResponseEntity<Void> update(@RequestParam String fitnessClassId,
                                        @RequestBody CreateUpdateFitnessClassDto dto) {

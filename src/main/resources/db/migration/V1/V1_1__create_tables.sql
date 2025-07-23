@@ -26,3 +26,11 @@ CREATE TABLE FITNESS_CLASSES_MEMBERS
     fitness_class_id VARCHAR(36) NOT NULL,
     member_id VARCHAR(36) NOT NULL
 );
+CREATE TABLE REVIEW (
+    review_id UUID DEFAULT RANDOM_UUID() PRIMARY KEY ,
+    coach_id UUID,
+    member_id UUID,
+    mark INT,
+    FOREIGN KEY (coach_id) REFERENCES coach(coach_id),
+    FOREIGN KEY (member_id) REFERENCES member(member_id)
+);

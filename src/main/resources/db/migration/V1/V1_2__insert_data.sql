@@ -32,3 +32,11 @@ INSERT INTO fitness_classes_members(fitness_class_id, member_id)
 VALUES ('b7b57d69-d9d0-43bf-a30e-39f682853269', SELECT member_id from member where member_nickname = 'Saw');
 
 
+
+INSERT INTO REVIEW(review_id,coach_id, member_id, mark)
+VALUES (
+    UUID(),
+    '151916c4-291c-4125-9ae7-d045eeece9ea',
+    '151916c4-291c-4125-9ae7-d045eeece9ee',
+    9
+);
